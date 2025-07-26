@@ -38,7 +38,7 @@ const MarketCard: React.FC<MarketCardProps> = ({
         <div className="flex items-center space-x-3">
           <img src="/icons/csk.svg" alt="CSK" className="w-12 h-12" />
           <div className='flex flex-col items-start'>
-            <h2 className="text-lg font-bold text-black font-semibold">{market.name}</h2>
+            <h2 className="text-lg font-bold text-black font-semibold whitespace-nowrap">{market.name}</h2>
             <p className="text-xs text-[#8F8F8F] font-[500]">{market.volume}</p>
           </div>
         </div>
@@ -77,7 +77,7 @@ const MarketCard: React.FC<MarketCardProps> = ({
             <motion.img 
               src="/icons/chart-bar.svg" 
               alt="Chart" 
-              className="w-[18px] h-6"
+              className="w-9 h-9"
               whileHover={{ scale: 1.2, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300, damping: 10 }}
             />

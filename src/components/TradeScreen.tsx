@@ -16,7 +16,6 @@ const TradeScreen: React.FC = () => {
   return (
     <div className="w-full font-['IBM_Plex_Sans'] flex justify-center">
       <div className="w-[412px] bg-white font-['IBM_Plex_Sans']">
-        {/* <Header /> */}
         <PredHeader />
         <MarketCard market={marketData} />
         
