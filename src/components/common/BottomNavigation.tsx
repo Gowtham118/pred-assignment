@@ -2,8 +2,8 @@ import React from 'react';
 import { useTradeManager } from '../../hooks';
 
 const BottomNavigation: React.FC = () => {
-  const { availableBalance, totalPnl } = useTradeManager();
-  const totalBalance = availableBalance + totalPnl;
+  const { availableBalance } = useTradeManager();
+  const totalBalance = availableBalance;
 
   return (
     <div className="flex justify-around items-center py-3 bg-white border-t border-gray-200">
@@ -17,9 +17,7 @@ const BottomNavigation: React.FC = () => {
       </div>
       <div className="flex flex-col items-center space-y-1">
         <img src="public/icons/wallet.svg" alt="Wallet" className="w-6 h-6" />
-        <span className={`text-xs font-medium ${
-          totalPnl >= 0 ? 'text-green-600' : 'text-red-600'
-        }`}>
+        <span className="text-xs font-medium text-gray-600">
           ${totalBalance.toFixed(2)}
         </span>
       </div>

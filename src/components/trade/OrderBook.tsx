@@ -1,50 +1,41 @@
 import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { OrderBookRow } from '../../types/trade';
-import { useTradeManager } from '../../hooks';
+import { useMarketStore } from '../../stores/useMarketStore';
 
 interface OrderBookProps {
   symbol: string;
 }
 
 const OrderBook: React.FC<OrderBookProps> = ({ symbol }) => {
-  const { getCurrentPrice } = useTradeManager();
-  const currentPrice = getCurrentPrice(symbol);
+  const { currentPrice } = useMarketStore();
 
   // Generate order book based on current price with memoization to prevent flickering
   const orderBook = useMemo(() => {
-    const sellOrders: OrderBookRow[] = [];
-    const buyOrders: OrderBookRow[] = [];
+    const sellOrders = [];
+    const buyOrders = [];
     
-    // Use a seed based on the current price to generate consistent random numbers
-    const seed = Math.floor(currentPrice * 100);
-    const random = (min: number, max: number) => {
-      const x = Math.sin(seed) * 10000;
-      return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
+    // Generate sell orders (higher prices)
+    for (let i = 0; i < 5; i++) {
+      const price = currentPrice + (i + 1) * 0.5;
+      // Vary the quantity realistically (100-2000 shares)
+      const shares = Math.floor(Math.random() * 1900) + 100;
+      sellOrders.push({ price, shares });
+    }
+    
+    // Generate buy orders (lower prices)
+    for (let i = 0; i < 5; i++) {
+      const price = currentPrice - (i + 1) * 0.5;
+      // Vary the quantity realistically (100-2000 shares)
+      const shares = Math.floor(Math.random() * 1900) + 100;
+      buyOrders.push({ price, shares });
+    }
+    
+    return {
+      sellOrders: sellOrders.sort((a, b) => b.price - a.price), // Highest first
+      buyOrders: buyOrders.sort((a, b) => a.price - b.price)   // Lowest first
     };
-    
-    // Generate sell orders (above current price)
-    for (let i = 1; i <= 5; i++) {
-      const price = currentPrice + (i * 0.5);
-      sellOrders.push({
-        price: parseFloat(price.toFixed(2)),
-        shares: random(5000, 15000),
-        type: 'sell'
-      });
-    }
-    
-    // Generate buy orders (below current price)
-    for (let i = 1; i <= 5; i++) {
-      const price = currentPrice - (i * 0.5);
-      buyOrders.push({
-        price: parseFloat(price.toFixed(2)),
-        shares: random(5000, 15000),
-        type: 'buy'
-      });
-    }
-    
-    return { sellOrders, buyOrders };
-  }, [currentPrice]); // Only regenerate when currentPrice changes
+  }, [currentPrice]);
 
   return (
     <motion.div 
