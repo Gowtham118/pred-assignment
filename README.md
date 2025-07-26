@@ -1,134 +1,175 @@
-# Pred Sports Trader
+# PRED Sports Trading Platform
 
-A React-based trading application for sports prediction markets, built with TypeScript, Tailwind CSS, and IBM Plex Sans font.
+A real-time sports trading platform built with React, TypeScript, and Tailwind CSS. Features a dynamic orderbook, live price simulation, and comprehensive trading functionality.
 
-## 🎯 Features
+## 🚀 Features
 
-- **Modern Trading Interface**: Clean, professional trading screen with real-time data
-- **Market Cards**: Display market information, prices, and volume
-- **Trade Controls**: Buy/Sell toggles, order types, price/shares inputs
-- **Order Book**: Real-time order book with buy/sell visualization
-- **Bottom Tabs**: Open orders, positions, and trade history
-- **Responsive Design**: Mobile-first design with Tailwind CSS
-- **TypeScript**: Full type safety throughout the application
+### Core Trading Features
+- **Real-time Order Management**: Place market and limit orders with instant execution
+- **Dynamic Orderbook**: Live orderbook with depth visualization showing liquidity distribution
+- **Position Management**: Track open positions with real-time P&L calculations
+- **Trade History**: Complete audit trail of all executed trades
+- **Balance Management**: Real-time balance updates with trade fee calculations
 
-## 🏗️ Project Structure
+### UI/UX Features
+- **Responsive Design**: Optimized for mobile trading with fixed dimensions (412px × 880px)
+- **Smooth Animations**: Framer Motion animations for order placement, cancellations, and transitions
+- **Accessibility**: ARIA roles, keyboard navigation, and high contrast text colors
+- **IBM Plex Sans Typography**: Professional trading interface font
+- **Real-time Updates**: Live price feeds and order status updates
 
-```
-src/
-├── components/
-│   ├── common/                 # Shared components
-│   │   ├── Header.tsx         # App header with status icons
-│   │   ├── BottomNavigation.tsx # Bottom navigation bar
-│   │   └── index.ts           # Export file
-│   ├── trade/                 # Trading-specific components
-│   │   ├── MarketCard.tsx     # Market information display
-│   │   ├── TradeControls.tsx  # Trading form controls
-│   │   ├── OrderBook.tsx      # Order book visualization
-│   │   ├── BottomTabs.tsx     # Bottom tab navigation
-│   │   └── index.ts           # Export file
-│   └── TradeScreen.tsx        # Main trading screen
-├── types/
-│   └── trade.ts               # TypeScript interfaces
-├── hooks/                     # Custom React hooks (future)
-└── assets/                    # Static assets
-```
+### Data Persistence
+- **localStorage Integration**: All trading data persists across browser sessions
+- **State Management**: Zustand stores for efficient state management
+- **Data Restoration**: Automatic restoration of orders, positions, and trade history on app restart
 
-## 🎨 Design System
-
-### Typography
-- **Font Family**: IBM Plex Sans
-- **Font Weights**: 
-  - Thin (100)
-  - ExtraLight (200)
-  - Light (300)
-  - Regular (400)
-  - Medium (500)
-  - SemiBold (600)
-  - Bold (700)
-
-### Color Scheme
-- **Primary**: Gray scale (50-800)
-- **Success**: Green (600)
-- **Error**: Red (600)
-- **Accent**: Purple (600)
-
-## 🚀 Getting Started
+## 🛠️ Setup Instructions
 
 ### Prerequisites
 - Node.js (v16 or higher)
-- npm or yarn
+- npm or yarn package manager
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd pred-sports-trader
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm start
+   ```
+
+4. **Open your browser**
+   Navigate to `http://localhost:3000`
+
+### Build for Production
 ```bash
-git clone <repository-url>
-cd pred-sports-trader
+npm run build
 ```
 
-2. Install dependencies:
-```bash
-npm install
+## 🏗️ Architecture
+
+### Technology Stack
+- **Frontend**: React 18 with TypeScript
+- **Styling**: Tailwind CSS with custom components
+- **State Management**: Zustand stores
+- **Animations**: Framer Motion
+- **Data Persistence**: localStorage with custom sync hooks
+
+### Project Structure
+```
+src/
+├── components/
+│   ├── common/           # Reusable UI components
+│   │   └── PredHeader.tsx # Secondary header
+│   └── trade/            # Trading-specific components
+│       ├── TradeScreen.tsx    # Main trading interface
+│       ├── TradeControls.tsx  # Order placement controls
+│       ├── OrderBook.tsx      # Live orderbook display
+│       ├── MarketCard.tsx     # Market information card
+│       └── BottomTabs.tsx     # Orders, positions, history tabs
+├── stores/               # Zustand state stores
+│   ├── useMarketStore.ts     # Price feed and market data
+│   ├── useOrderbookStore.ts  # Orders, positions, trade history
+│   └── useBalanceStore.ts    # Balance and P&L management
+├── hooks/                # Custom React hooks
+│   ├── useTradeEngine.ts     # Trading logic and order execution
+│   ├── useLocalStorageSync.ts # Data persistence
+│   └── index.ts              # Hook exports
+├── types/                # TypeScript type definitions
+│   └── trade.ts              # Trading-related types
+└── App.tsx               # Main application component
 ```
 
-3. Start the development server:
-```bash
-npm run dev
-```
+## 📊 Mock Data Simulation
 
-4. Open your browser and navigate to `http://localhost:5173`
+### Price Feed Simulation
+- **Real-time Updates**: Price changes every 2 seconds
+- **Realistic Movement**: ±2% random price fluctuations
+- **Price History**: Maintains last 100 price points
+- **Cents Denomination**: All prices displayed in cents (e.g., 34¢)
 
-## 🛠️ Technology Stack
+### Orderbook Generation
+- **Dynamic Depth**: 5 levels on each side (buy/sell)
+- **Realistic Quantities**: Random shares between 100-2000
+- **Depth Visualization**: Horizontal progress bars showing liquidity distribution
+- **Cumulative Volume**: Background extends based on total volume at each price level
 
-- **React 18**: Modern React with hooks
-- **TypeScript**: Type-safe development
-- **Tailwind CSS**: Utility-first CSS framework
-- **Vite**: Fast build tool and dev server
-- **IBM Plex Sans**: Professional typography
+### Trading Simulation
+- **Market Orders**: Execute immediately at current mid price
+- **Limit Orders**: Execute when price crosses the limit
+- **Trade Fees**: 1% fee on all transactions
+- **Balance Management**: Real-time balance updates
+- **Position Tracking**: Automatic P&L calculations
 
-## 📱 Component Details
+## 🔧 Implementation Decisions
 
-### TradeScreen
-The main trading interface that orchestrates all trading components.
+### State Management Strategy
+**Zustand Stores**: Chosen over Redux for simplicity and performance
+- **useMarketStore**: Manages price feed and market data
+- **useOrderbookStore**: Handles orders, positions, and trade history
+- **useBalanceStore**: Manages user balance and P&L
 
-### MarketCard
-Displays market information including:
-- Market name and symbol
-- Current price and percentage change
-- Trading volume
-- Market logo/branding
+### Data Persistence Approach
+**localStorage with Custom Sync**: Ensures data survives browser restarts
+- **Automatic Sync**: All state changes automatically saved
+- **Selective Restoration**: Only pending orders restored (not filled/cancelled)
+- **Sample Data**: Initial sample data for testing when no existing data
 
-### TradeControls
-Interactive trading form with:
-- Buy/Long vs Sell/Short toggle
-- Order type selection (Limit/Market)
-- Price and shares input fields
-- Percentage slider for position sizing
-- Order summary and submit button
+### UI/UX Design Decisions
+**Mobile-First Trading Interface**:
+- **Fixed Dimensions**: 412px × 880px container for consistent experience
+- **Scrollable Sections**: Tab content scrollable to handle varying data amounts
+- **Real-time Feedback**: Immediate visual feedback for all user actions
+- **Professional Typography**: IBM Plex Sans for trading interface
 
-### OrderBook
-Real-time order book visualization:
-- Sell orders (red background)
-- Buy orders (green background)
-- Mid-price indicator
-- Spread information
+### Trading Logic Implementation
+**Realistic Trading Engine**:
+- **Price Conversion**: Proper cents-to-dollars conversion for calculations
+- **Order Execution**: Market orders execute immediately, limit orders wait for price
+- **Position Management**: Automatic position creation, updates, and closure
+- **Fee Calculation**: 1% fee applied to all trades
 
-### BottomTabs
-Tabbed interface for:
-- Open Orders: Current pending orders
-- Positions: Current holdings
-- Trade History: Past trades
+### Performance Optimizations
+- **Memoization**: Orderbook data memoized to prevent unnecessary re-renders
+- **Efficient Updates**: Zustand's selective updates minimize re-renders
+- **Animation Optimization**: Framer Motion optimizations for smooth performance
+- **Debounced Updates**: Price updates throttled to prevent excessive re-renders
 
-## 🎯 Future Enhancements
+## 🎯 Key Features Explained
 
-- [ ] Real-time data integration
-- [ ] WebSocket connections
-- [ ] Advanced charting
-- [ ] Portfolio management
-- [ ] User authentication
-- [ ] Mobile app (React Native)
+### Dynamic Orderbook
+The orderbook displays real-time market depth with:
+- **Sell Orders**: Red background extending horizontally based on cumulative volume
+- **Buy Orders**: Green background extending horizontally based on cumulative volume
+- **Depth Visualization**: Background length represents total liquidity at each price level
+- **Real-time Updates**: Orderbook regenerates with each price change
 
-## 📄 License
+### Order Management
+Comprehensive order handling with:
+- **Market Orders**: Execute immediately at current market price
+- **Limit Orders**: Wait for price to cross the specified limit
+- **Order Status**: Pending → Filled/Cancelled with visual progress indicators
+- **Automatic Cleanup**: Filled orders removed from open orders after 1 second
 
-This project is licensed under the MIT License.
+### Position Tracking
+Real-time position management featuring:
+- **Automatic Creation**: Positions created when orders are filled
+- **P&L Calculation**: Real-time profit/loss in dollars (converted from cents)
+- **Position Updates**: Existing positions updated with new trades
+- **Position Closure**: Automatic closure when selling entire position
+
+### Trade History
+Complete audit trail including:
+- **Timestamp Format**: YYYY-MM-DD HH:mm:ss format for all timestamps
+- **Trade Details**: Price, size, fees, and execution time
+- **Order Type Display**: Limit/Buy (green) or Limit/Sell (red) with color coding
+- **Persistent Storage**: All trades saved to localStorage
