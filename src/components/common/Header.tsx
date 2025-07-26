@@ -9,9 +9,9 @@ const Header: React.FC = () => (
     <div className="w-8 h-8 bg-black rounded-full"></div>
     
     <div className="flex items-center space-x-3">
-      <img src="public/icons/wifi.svg" alt="WiFi" className="w-5 h-5" />
-      <img src="public/icons/tower.svg" alt="Cell tower" className="w-5 h-5" />
-      <img src="public/icons/battery.svg" alt="Battery" className="w-5 h-5" />
+      <img src="/icons/wifi.svg" alt="WiFi" className="w-5 h-5" />
+      <img src="/icons/tower.svg" alt="Cell tower" className="w-5 h-5" />
+      <img src="/icons/battery.svg" alt="Battery" className="w-5 h-5" />
     </div>
   </div>
 );
