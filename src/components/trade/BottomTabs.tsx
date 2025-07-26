@@ -95,11 +95,10 @@ const BottomTabs: React.FC = () => {
             aria-selected={activeTab === tab.id}
             aria-controls={`${tab.id}-panel`}
             tabIndex={activeTab === tab.id ? 0 : -1}
-            className={`flex-1 py-2 px-2 font-medium text-xs tracking-wider uppercase transition-colors
+            className={`p-2 ml-3 font-medium text-xs uppercase transition-colors
               ${activeTab === tab.id
                 ? 'text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
                 : 'text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}`}
-            style={{ letterSpacing: '0.08em' }}
           >
             {tab.label}
           </button>
