@@ -4,6 +4,9 @@ A real-time sports trading platform built with React, TypeScript, and Tailwind C
 
 ## 🚀 Features
 
+### Lighthouse Report
+![Trading Platform Performance](public/performance.jpg)
+
 ### Core Trading Features
 - **Real-time Order Management**: Place market and limit orders with instant execution
 - **Dynamic Orderbook**: Live orderbook with depth visualization showing liquidity distribution
