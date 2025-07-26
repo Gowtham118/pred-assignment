@@ -11,8 +11,12 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol }) => {
 
   // Generate order book based on current price with memoization to prevent flickering
   const orderBook = useMemo(() => {
-    const sellOrders = [];
-    const buyOrders = [];
+    const sellOrders: Array<{ price: number; shares: number }> = [];
+    const buyOrders: Array<{ price: number; shares: number }> = [];
+
+    // Calculate total volume for percentage calculations
+    let totalSellVolume = 0;
+    let totalBuyVolume = 0;
     
     // Generate sell orders (higher prices)
     for (let i = 0; i < 5; i++) {
@@ -20,6 +24,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol }) => {
       // Vary the quantity realistically (100-2000 shares)
       const shares = Math.floor(Math.random() * 1900) + 100;
       sellOrders.push({ price, shares });
+      totalSellVolume += shares;
     }
     
     // Generate buy orders (lower prices)
@@ -28,11 +33,43 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol }) => {
       // Vary the quantity realistically (100-2000 shares)
       const shares = Math.floor(Math.random() * 1900) + 100;
       buyOrders.push({ price, shares });
+      totalBuyVolume += shares;
     }
     
+    // Calculate depth percentages for each order
+    const sellOrdersWithDepth = sellOrders.map((order, index) => {
+      // Calculate cumulative volume up to this price level
+      const cumulativeVolume = sellOrders
+        .slice(0, index + 1)
+        .reduce((sum, o) => sum + o.shares, 0);
+
+      // Calculate depth percentage (how much of the total volume is at this price or better)
+      const depthPercentage = (cumulativeVolume / totalSellVolume) * 100;
+
+      return {
+        ...order,
+        depthPercentage: Math.min(100, depthPercentage)
+      };
+    });
+
+    const buyOrdersWithDepth = buyOrders.map((order, index) => {
+      // Calculate cumulative volume up to this price level
+      const cumulativeVolume = buyOrders
+        .slice(0, index + 1)
+        .reduce((sum, o) => sum + o.shares, 0);
+
+      // Calculate depth percentage (how much of the total volume is at this price or better)
+      const depthPercentage = (cumulativeVolume / totalBuyVolume) * 100;
+
+      return {
+        ...order,
+        depthPercentage: Math.min(100, depthPercentage)
+      };
+    });
+
     return {
-      sellOrders: sellOrders.sort((a, b) => b.price - a.price), // Highest first
-      buyOrders: buyOrders.sort((a, b) => a.price - b.price)   // Lowest first
+      sellOrders: sellOrdersWithDepth.sort((a, b) => b.price - a.price), // Highest first
+      buyOrders: buyOrdersWithDepth.sort((a, b) => a.price - b.price)   // Lowest first
     };
   }, [currentPrice]);
 
@@ -63,12 +100,17 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol }) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
             transition={{ delay: index * 0.05 }}
-            className="py-[1px] text-sm hover:bg-red-100 transition-colors"
+            className="py-[1px] text-sm hover:bg-red-100 transition-colors relative"
             whileHover={{ scale: 1.01 }}
           >
-            <div className='flex justify-between py-[1px] bg-[#A900221A]'>
-            <span className=" font-medium">{order.price.toFixed(0)}¢</span>
-            <span className="text-black font-medium">{order.shares.toFixed(2)}</span>
+            <div
+              className='flex justify-between py-[2px] relative z-10'
+              style={{
+                background: `linear-gradient(to right, rgba(169, 0, 34, 0.1) 0%, rgba(169, 0, 34, 0.1) ${order.depthPercentage}%, transparent ${order.depthPercentage}%, transparent 100%)`
+              }}
+            >
+              <span className="font-medium">{order.price.toFixed(0)}¢</span>
+              <span className="text-black font-medium">{order.shares.toFixed(2)}</span>
             </div>
           </motion.div>
         ))}
@@ -107,12 +149,17 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol }) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ delay: index * 0.05 }}
-            className="py-[1px] text-sm hover:bg-green-100 transition-colors"
+            className="py-[1px] text-sm hover:bg-green-100 transition-colors relative"
             whileHover={{ scale: 1.01 }}
           >
-            <div className='flex justify-between py-[1px] bg-[#06A9001A]'>
-            <span className=" font-medium">{order.price.toFixed(0)}¢</span>
-            <span className="text-black font-medium">{order.shares.toFixed(2)}</span>
+            <div
+              className='flex justify-between py-[2px] relative z-10'
+              style={{
+                background: `linear-gradient(to right, rgba(6, 169, 0, 0.1) 0%, rgba(6, 169, 0, 0.1) ${order.depthPercentage}%, transparent ${order.depthPercentage}%, transparent 100%)`
+              }}
+            >
+              <span className="font-medium">{order.price.toFixed(0)}¢</span>
+              <span className="text-black font-medium">{order.shares.toFixed(2)}</span>
             </div>
           </motion.div>
         ))}
