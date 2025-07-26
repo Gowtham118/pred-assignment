@@ -31,8 +31,6 @@ export const useLocalStorageSync = () => {
 
     // Load data from localStorage on mount
     useEffect(() => {
-        let isDataLoaded = false;
-
         try {
             // Load market data
             const marketData = localStorage.getItem(STORAGE_KEYS.MARKET);
@@ -62,7 +60,10 @@ export const useLocalStorageSync = () => {
                 // Restore orders, positions, and trade history with their original IDs and timestamps
                 if (parsed.openOrders && Array.isArray(parsed.openOrders)) {
                     parsed.openOrders.forEach((order: any) => {
-                        restoreOrder(order);
+                        // Only restore pending orders (not filled or cancelled)
+                        if (order.status === 'pending') {
+                            restoreOrder(order);
+                        }
                     });
                 }
 
@@ -79,7 +80,6 @@ export const useLocalStorageSync = () => {
                 }
 
                 console.log('Orderbook data restored successfully');
-                isDataLoaded = true;
             } else {
                 // Add sample data only if no existing data
                 console.log('No orderbook data found, adding sample data for testing');
@@ -114,7 +114,6 @@ export const useLocalStorageSync = () => {
                 });
 
                 console.log('Sample data added:', { sampleOrderId, samplePositionId });
-                isDataLoaded = true;
             }
         } catch (error) {
             console.error('Error loading data from localStorage:', error);

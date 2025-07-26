@@ -23,7 +23,7 @@ const TradeScreen: React.FC = () => {
         {/* Trade Section - Horizontal Layout */}
         <div className="flex justify-around">
           <div className="w-[214px]">
-            <TradeControls market={marketData.name} symbol={marketData.symbol} />
+            <TradeControls symbol="CSK" />
           </div>
           <div className="w-[135px]">
             <OrderBook symbol={marketData.symbol} />

@@ -1,4 +1,3 @@
-import React from 'react';
 import TradeScreen from './components/TradeScreen';
 import { useLocalStorageSync } from './hooks/useLocalStorageSync';
 import './App.css';

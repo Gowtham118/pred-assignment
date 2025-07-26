@@ -4,11 +4,10 @@ import { useTradeEngine } from '../../hooks/useTradeEngine';
 import { useMarketStore } from '../../stores/useMarketStore';
 
 interface TradeControlsProps {
-  market: string;
   symbol: string;
 }
 
-const TradeControls: React.FC<TradeControlsProps> = ({ market, symbol }) => {
+const TradeControls: React.FC<TradeControlsProps> = ({ symbol }) => {
   const [tradeType, setTradeType] = useState<'buy' | 'sell'>('buy');
   const [orderType, setOrderType] = useState<'market' | 'limit'>('limit');
   const [price, setPrice] = useState('');
@@ -34,12 +33,6 @@ const TradeControls: React.FC<TradeControlsProps> = ({ market, symbol }) => {
     const sharesNum = parseFloat(shares || '0');
     return (priceNum / 100) * sharesNum;
   }, [price, shares]);
-
-  // Calculate max shares possible with available balance at current price
-  const maxShares = useMemo(() => {
-    const priceNum = parseFloat(price || '1');
-    return priceNum > 0 ? balance / (priceNum / 100) : 0;
-  }, [balance, price]);
 
   // Calculate potential profit (To Win)
   const toWin = useMemo(() => {

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { MarketData } from '../../types/trade';
-import { useTradeManager } from '../../hooks';
+import { useTradeEngine } from '../../hooks';
 
 interface MarketCardProps {
   market?: MarketData;
@@ -18,8 +18,7 @@ const MarketCard: React.FC<MarketCardProps> = ({
     logo: 'CSK'
   }
 }) => {
-  const { getCurrentPrice } = useTradeManager();
-  const currentPrice = getCurrentPrice(market.symbol);
+  const { currentPrice } = useTradeEngine();
   
   // Memoize price change calculation to prevent unnecessary re-renders
   const { priceChangePercent } = useMemo(() => {

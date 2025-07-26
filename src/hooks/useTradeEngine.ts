@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useMarketStore } from '../stores/useMarketStore';
-import { useOrderbookStore, type Order, type Position } from '../stores/useOrderbookStore';
+import { useOrderbookStore } from '../stores/useOrderbookStore';
 import { useBalanceStore } from '../stores/useBalanceStore';
 
 const TRADE_FEE_PERCENT = 0.01; // 1% fee
@@ -73,13 +73,14 @@ export const useTradeEngine = () => {
             } else {
                 // Create new position
                 console.log('useTradeEngine: Creating new position');
-                addPosition({
+                const positionId = addPosition({
                     symbol,
                     side: 'long',
                     size,
                     entryPrice: price,
                     currentPrice: price
                 });
+                console.log('useTradeEngine: New position created with ID:', positionId);
             }
         } else {
             // Sell order
@@ -122,12 +123,18 @@ export const useTradeEngine = () => {
             fee
         });
 
-        // Update order status
+        // Update order status to filled and remove from open orders
         updateOrderStatus(orderId, 'filled');
         console.log('useTradeEngine: Order filled successfully');
 
+        // Remove the filled order from open orders after a short delay
+        setTimeout(() => {
+            removeOrder(orderId);
+            console.log('useTradeEngine: Removed filled order from open orders:', orderId);
+        }, 1000); // 1 second delay to show the filled status
+
         return true;
-    }, [balance, positions, addPosition, updatePosition, removePosition, addBalance, subtractBalance, addTrade, updateOrderStatus, calculateFee]);
+    }, [balance, positions, addPosition, updatePosition, removePosition, addBalance, subtractBalance, addTrade, updateOrderStatus, removeOrder, calculateFee]);
 
     // Place order function
     const placeOrder = useCallback((

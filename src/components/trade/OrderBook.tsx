@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { OrderBookRow } from '../../types/trade';
 import { useMarketStore } from '../../stores/useMarketStore';
 
 interface OrderBookProps {

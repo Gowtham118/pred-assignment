@@ -1,9 +1,9 @@
 import React from 'react';
-import { useTradeManager } from '../../hooks';
+import { useTradeEngine } from '../../hooks';
 
 const BottomNavigation: React.FC = () => {
-  const { availableBalance } = useTradeManager();
-  const totalBalance = availableBalance;
+  const { balance } = useTradeEngine();
+  const totalBalance = balance;
 
   return (
     <div className="flex justify-around items-center py-3 bg-white border-t border-gray-200">

@@ -33,17 +33,6 @@ const BottomTabs: React.FC = () => {
     }).replace(',', '');
   };
 
-  const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleString('en-CA', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    }).replace(',', '');
-  };
-
   const calculateProgress = (order: any) => {
     const elapsed = Date.now() - new Date(order.timestamp).getTime();
     const total = 30000; // 30 seconds
@@ -72,7 +61,6 @@ const BottomTabs: React.FC = () => {
         break;
       case 'ArrowRight':
         event.preventDefault();
-        const nextTab = tabs.find(tab => tab.id === tabId);
         const nextIndex = (tabs.findIndex(tab => tab.id === tabId) + 1) % tabs.length;
         setActiveTab(tabs[nextIndex].id);
         break;
@@ -127,10 +115,11 @@ const BottomTabs: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="max-h-[300px] overflow-y-auto"
           >
             {activeTab === 'orders' && (
               <div
-                className="space-y-3"
+                className="space-y-3 p-2"
                 role="tabpanel"
                 id="orders-panel"
                 aria-labelledby="orders-tab"
@@ -221,7 +210,7 @@ const BottomTabs: React.FC = () => {
 
             {activeTab === 'positions' && (
               <div
-                className="space-y-3"
+                className="space-y-3 p-2"
                 role="tabpanel"
                 id="positions-panel"
                 aria-labelledby="positions-tab"
@@ -301,6 +290,7 @@ const BottomTabs: React.FC = () => {
                 role="tabpanel"
                 id="history-panel"
                 aria-labelledby="history-tab"
+                className="p-2"
               >
                 {tradeHistory.length === 0 ? (
                   <motion.div

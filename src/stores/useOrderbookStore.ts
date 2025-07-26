@@ -109,15 +109,15 @@ export const useOrderbookStore = create<OrderbookState>((set, get) => ({
     },
 
     updatePosition: (positionId, updates) => {
-        const { currentPrice } = get();
         set((state) => ({
             positions: state.positions.map(position => {
                 if (position.id === positionId) {
                     const updatedPosition = { ...position, ...updates };
-                    // Calculate P&L if currentPrice is provided
+                    // Calculate P&L if currentPrice is provided (convert cents to dollars)
                     if (updates.currentPrice !== undefined) {
-                        const pnl = (updates.currentPrice - position.entryPrice) * position.size;
-                        updatedPosition.pnl = pnl;
+                        const priceDiffInCents = updates.currentPrice - position.entryPrice;
+                        const pnlInDollars = (priceDiffInCents / 100) * position.size;
+                        updatedPosition.pnl = pnlInDollars;
                     }
                     return updatedPosition;
                 }
@@ -147,11 +147,12 @@ export const useOrderbookStore = create<OrderbookState>((set, get) => ({
         set((state) => ({
             currentPrice: price,
             positions: state.positions.map(position => {
-                const pnl = (price - position.entryPrice) * position.size;
+                const priceDiffInCents = price - position.entryPrice;
+                const pnlInDollars = (priceDiffInCents / 100) * position.size;
                 return {
                     ...position,
                     currentPrice: price,
-                    pnl
+                    pnl: pnlInDollars
                 };
             })
         }));
