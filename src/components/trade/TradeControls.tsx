@@ -389,10 +389,6 @@ const TradeControls: React.FC<TradeControlsProps> = ({ symbol }) => {
           className="w-full h-9 bg-gray-700 text-white font-semibold rounded-[4px] border border-gray-300 shadow-sm hover:bg-gray-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed disabled:border-gray-200"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          animate={isSubmitting ? { 
-            scale: [1, 1.1, 1],
-            rotate: [0, 5, -5, 0]
-          } : {}}
           transition={isSubmitting ? {
             duration: 0.3,
             repeat: 1,

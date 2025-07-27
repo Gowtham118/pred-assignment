@@ -104,7 +104,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol }) => {
             whileHover={{ scale: 1.01 }}
           >
             <div
-              className='flex justify-between py-[2px] relative z-10'
+              className='flex justify-between py-[1px] relative z-10'
               style={{
                 background: `linear-gradient(to right, rgba(169, 0, 34, 0.1) 0%, rgba(169, 0, 34, 0.1) ${order.depthPercentage}%, transparent ${order.depthPercentage}%, transparent 100%)`
               }}
@@ -153,7 +153,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol }) => {
             whileHover={{ scale: 1.01 }}
           >
             <div
-              className='flex justify-between py-[2px] relative z-10'
+              className='flex justify-between py-[1px] relative z-10'
               style={{
                 background: `linear-gradient(to right, rgba(6, 169, 0, 0.1) 0%, rgba(6, 169, 0, 0.1) ${order.depthPercentage}%, transparent ${order.depthPercentage}%, transparent 100%)`
               }}

@@ -165,22 +165,4 @@ export const useLocalStorageSync = () => {
             stopPriceSimulation();
         };
     }, []);
-
-    // Function to clear all data (useful for debugging or reset)
-    const clearAllLocalStorage = () => {
-        localStorage.removeItem(STORAGE_KEYS.MARKET);
-        localStorage.removeItem(STORAGE_KEYS.ORDERBOOK);
-        localStorage.removeItem(STORAGE_KEYS.BALANCE);
-        console.log('All localStorage data cleared');
-    };
-
-    // Expose the clear function for debugging
-    React.useEffect(() => {
-        (window as any).clearTradingData = clearAllLocalStorage;
-        console.log('Debug function available: window.clearTradingData() to reset all data');
-    }, []);
-
-    return {
-        clearAllLocalStorage
-    };
 }; 
